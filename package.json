@@ -1,11 +1,13 @@
 {
   "name": "@ironarachne/words",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library for dealing with words",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "biome": "biome ci src/index.ts",
     "build": "tsc",
+    "docs": "typedoc --out docs src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +24,8 @@
   },
   "homepage": "https://github.com/ironarachne/words#readme",
   "devDependencies": {
+    "@biomejs/biome": "1.5.3",
+    "typedoc": "^0.25.7",
     "typescript": "^5.1.6"
   }
 }
