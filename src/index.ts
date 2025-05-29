@@ -39,7 +39,9 @@ export function article(word: string, appendWord = false): string {
 export function arrayToPhrase(words: string[]): string {
   if (words.length === 1) {
     return words[0];
-  } else if (words.length === 2) {
+  }
+
+  if (words.length === 2) {
     return `${words[0]} and ${words[1]}`;
   }
 
@@ -240,31 +242,31 @@ export function romanize(num: number) {
  * @returns {string} The pluralized word.
  */
 export function pluralize(word: string): string {
-  if (!word) return '';
+  if (!word) return "";
   const lower = word.toLowerCase();
   // Irregular plurals
   const irregulars: Record<string, string> = {
-    goose: 'geese',
-    man: 'men',
-    woman: 'women',
-    child: 'children',
-    tooth: 'teeth',
-    foot: 'feet',
-    mouse: 'mice',
-    person: 'people',
-    cactus: 'cacti',
-    focus: 'foci',
-    fungus: 'fungi',
-    nucleus: 'nuclei',
-    syllabus: 'syllabi',
-    analysis: 'analyses',
-    diagnosis: 'diagnoses',
-    oasis: 'oases',
-    thesis: 'theses',
-    crisis: 'crises',
-    phenomenon: 'phenomena',
-    criterion: 'criteria',
-    datum: 'data',
+    goose: "geese",
+    man: "men",
+    woman: "women",
+    child: "children",
+    tooth: "teeth",
+    foot: "feet",
+    mouse: "mice",
+    person: "people",
+    cactus: "cacti",
+    focus: "foci",
+    fungus: "fungi",
+    nucleus: "nuclei",
+    syllabus: "syllabi",
+    analysis: "analyses",
+    diagnosis: "diagnoses",
+    oasis: "oases",
+    thesis: "theses",
+    crisis: "crises",
+    phenomenon: "phenomena",
+    criterion: "criteria",
+    datum: "data",
   };
   if (irregulars[lower]) {
     // Preserve case of first letter
@@ -272,11 +274,17 @@ export function pluralize(word: string): string {
       ? irregulars[lower][0].toUpperCase() + irregulars[lower].slice(1)
       : irregulars[lower];
   }
-  if (lower.endsWith('y') && !/[aeiou]y$/.test(lower)) {
-    return word.slice(0, -1) + 'ies';
+  if (lower.endsWith("y") && !/[aeiou]y$/.test(lower)) {
+    return `${word.slice(0, -1)}ies`;
   }
-  if (lower.endsWith('s') || lower.endsWith('x') || lower.endsWith('z') || lower.endsWith('ch') || lower.endsWith('sh')) {
-    return word + 'es';
+  if (
+    lower.endsWith("s") ||
+    lower.endsWith("x") ||
+    lower.endsWith("z") ||
+    lower.endsWith("ch") ||
+    lower.endsWith("sh")
+  ) {
+    return `${word}es`;
   }
-  return word + 's';
+  return `${word}s`;
 }
