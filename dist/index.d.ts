@@ -64,3 +64,10 @@ export declare function removeEntry(word: string, words: string[]): string[];
  * @returns {string} The roman numeral.
  */
 export declare function romanize(num: number): string | number;
+/**
+ * This function returns the plural form of a given word (basic English rules and some irregulars).
+ *
+ * @param {string} word - The word to pluralize.
+ * @returns {string} The pluralized word.
+ */
+export declare function pluralize(word: string): string;

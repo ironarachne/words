@@ -39,7 +39,9 @@ export function article(word: string, appendWord = false): string {
 export function arrayToPhrase(words: string[]): string {
   if (words.length === 1) {
     return words[0];
-  } else if (words.length === 2) {
+  }
+
+  if (words.length === 2) {
     return `${words[0]} and ${words[1]}`;
   }
 
@@ -186,7 +188,7 @@ export function removeEntry(word: string, words: string[]) {
  * @returns {string} The roman numeral.
  */
 export function romanize(num: number) {
-  if (Number.isNaN(num)) return NaN;
+  if (Number.isNaN(num)) return Number.NaN;
   const digits = String(+num).split("");
   const key = [
     "",
@@ -231,4 +233,58 @@ export function romanize(num: number) {
     }
   }
   return Array(+digits.join("") + 1).join("M") + roman;
+}
+
+/**
+ * This function returns the plural form of a given word (basic English rules and some irregulars).
+ *
+ * @param {string} word - The word to pluralize.
+ * @returns {string} The pluralized word.
+ */
+export function pluralize(word: string): string {
+  if (!word) return "";
+  const lower = word.toLowerCase();
+  // Irregular plurals
+  const irregulars: Record<string, string> = {
+    goose: "geese",
+    man: "men",
+    woman: "women",
+    child: "children",
+    tooth: "teeth",
+    foot: "feet",
+    mouse: "mice",
+    person: "people",
+    cactus: "cacti",
+    focus: "foci",
+    fungus: "fungi",
+    nucleus: "nuclei",
+    syllabus: "syllabi",
+    analysis: "analyses",
+    diagnosis: "diagnoses",
+    oasis: "oases",
+    thesis: "theses",
+    crisis: "crises",
+    phenomenon: "phenomena",
+    criterion: "criteria",
+    datum: "data",
+  };
+  if (irregulars[lower]) {
+    // Preserve case of first letter
+    return word[0] === word[0].toUpperCase()
+      ? irregulars[lower][0].toUpperCase() + irregulars[lower].slice(1)
+      : irregulars[lower];
+  }
+  if (lower.endsWith("y") && !/[aeiou]y$/.test(lower)) {
+    return `${word.slice(0, -1)}ies`;
+  }
+  if (
+    lower.endsWith("s") ||
+    lower.endsWith("x") ||
+    lower.endsWith("z") ||
+    lower.endsWith("ch") ||
+    lower.endsWith("sh")
+  ) {
+    return `${word}es`;
+  }
+  return `${word}s`;
 }

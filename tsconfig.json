@@ -8,5 +8,9 @@
     "strict": true,
     "target": "es2019",
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "exclude": [
+    "src/**/*.test.ts",
+    "dist"
+  ]
 }

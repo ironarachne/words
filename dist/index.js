@@ -1,6 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.romanize = exports.removeEntry = exports.pronoun = exports.getOrdinal = exports.title = exports.uncapitalize = exports.capitalize = exports.arrayToPhrase = exports.article = void 0;
+exports.article = article;
+exports.arrayToPhrase = arrayToPhrase;
+exports.capitalize = capitalize;
+exports.uncapitalize = uncapitalize;
+exports.title = title;
+exports.getOrdinal = getOrdinal;
+exports.pronoun = pronoun;
+exports.removeEntry = removeEntry;
+exports.romanize = romanize;
+exports.pluralize = pluralize;
 /**
  * This function returns the correct article for a given word.
  *
@@ -28,7 +37,6 @@ function article(word, appendWord = false) {
     }
     return "a";
 }
-exports.article = article;
 /**
  * This function takes an array of words and returns a phrase connected by commas and the word 'and'.
  *
@@ -59,7 +67,6 @@ function arrayToPhrase(words) {
     }
     return phrase;
 }
-exports.arrayToPhrase = arrayToPhrase;
 /**
  * This function capitalizes the first letter of a word.
  *
@@ -69,7 +76,6 @@ exports.arrayToPhrase = arrayToPhrase;
 function capitalize(word) {
     return word[0].toUpperCase() + word.slice(1);
 }
-exports.capitalize = capitalize;
 /**
  * This function uncapitalizes the first letter of a word.
  *
@@ -79,7 +85,6 @@ exports.capitalize = capitalize;
 function uncapitalize(word) {
     return word[0].toLowerCase() + word.slice(1);
 }
-exports.uncapitalize = uncapitalize;
 /**
  * This function capitalizes the first letter of each word in a phrase.
  *
@@ -100,7 +105,6 @@ function title(phrase) {
     result = result.trimEnd();
     return result;
 }
-exports.title = title;
 /**
  * This function returns the ordinal suffix for a given number.
  *
@@ -123,7 +127,6 @@ function getOrdinal(number) {
             return "th";
     }
 }
-exports.getOrdinal = getOrdinal;
 /**
  * This function returns the pronoun for a given gender and word case.
  *
@@ -157,7 +160,6 @@ function pronoun(gender, wordCase) {
     }
     return pronoun;
 }
-exports.pronoun = pronoun;
 /**
  * This function removes a word from an array of words.
  *
@@ -174,7 +176,6 @@ function removeEntry(word, words) {
     }
     return newWords;
 }
-exports.removeEntry = removeEntry;
 /**
  * This function converts a number to a roman numeral.
  *
@@ -183,7 +184,7 @@ exports.removeEntry = removeEntry;
  */
 function romanize(num) {
     if (Number.isNaN(num))
-        return NaN;
+        return Number.NaN;
     const digits = String(+num).split("");
     const key = [
         "",
@@ -229,4 +230,51 @@ function romanize(num) {
     }
     return Array(+digits.join("") + 1).join("M") + roman;
 }
-exports.romanize = romanize;
+/**
+ * This function returns the plural form of a given word (basic English rules and some irregulars).
+ *
+ * @param {string} word - The word to pluralize.
+ * @returns {string} The pluralized word.
+ */
+function pluralize(word) {
+    if (!word)
+        return '';
+    const lower = word.toLowerCase();
+    // Irregular plurals
+    const irregulars = {
+        goose: 'geese',
+        man: 'men',
+        woman: 'women',
+        child: 'children',
+        tooth: 'teeth',
+        foot: 'feet',
+        mouse: 'mice',
+        person: 'people',
+        cactus: 'cacti',
+        focus: 'foci',
+        fungus: 'fungi',
+        nucleus: 'nuclei',
+        syllabus: 'syllabi',
+        analysis: 'analyses',
+        diagnosis: 'diagnoses',
+        oasis: 'oases',
+        thesis: 'theses',
+        crisis: 'crises',
+        phenomenon: 'phenomena',
+        criterion: 'criteria',
+        datum: 'data',
+    };
+    if (irregulars[lower]) {
+        // Preserve case of first letter
+        return word[0] === word[0].toUpperCase()
+            ? irregulars[lower][0].toUpperCase() + irregulars[lower].slice(1)
+            : irregulars[lower];
+    }
+    if (lower.endsWith('y') && !/[aeiou]y$/.test(lower)) {
+        return word.slice(0, -1) + 'ies';
+    }
+    if (lower.endsWith('s') || lower.endsWith('x') || lower.endsWith('z') || lower.endsWith('ch') || lower.endsWith('sh')) {
+        return word + 'es';
+    }
+    return word + 's';
+}
