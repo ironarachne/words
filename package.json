@@ -5,11 +5,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "biome": "biome ci src/index.ts",
+    "biome": "biome ci src/*.ts",
     "build": "tsc",
-    "format": "biome format --write src/index.ts",
+    "format": "biome format --write src/",
     "docs": "typedoc --out docs src/index.ts",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
