@@ -2,7 +2,7 @@
 
 A comprehensive TypeScript/JavaScript library for procedural natural language generation, string manipulation, and grammatical inflection. Originally built to provide utility functions for producing natural-sounding English from component parts, it's perfect for text generators, game development, and formatting data seamlessly.
 
-Full documentation is available at [words.ironarachne.com/docs](https://words.ironarachne.com/docs).
+Full documentation is available at [ironarachne.github.io/words](https://ironarachne.github.io/words).
 
 ## Installation
 
