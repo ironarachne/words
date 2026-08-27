@@ -78,23 +78,23 @@ const text = buildSentence(parts);
 console.log(text);
 ```
 
-## Contributing and Setup
+## Contributing
 
-This project uses TypeScript, Vitest for testing, and Biome for formatting.
+This project uses TypeScript, Vitest for testing, and Biome for linting and
+formatting. Node 20 or newer is required.
 
 ```bash
 # Install dependencies
 npm install
 
-# Run the test suite
-npm run test
-
-# Build the project
-npm run build
-
-# Re-generate the TypeDoc documentation
-npm run docs
+# Lint, build, and test — run this before pushing
+npm run check
 ```
+
+`main` is protected; every change lands through a pull request with CI green.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow and how releases
+are cut, and [CODE_STYLE.md](CODE_STYLE.md) for the conventions this codebase
+follows.
 
 ## License
 MIT License.

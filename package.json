@@ -4,26 +4,45 @@
   "description": "A library for dealing with words",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "biome": "biome ci src/*.ts",
     "build": "tsc",
-    "format": "biome format --write src/",
+    "check": "npm run lint && npm run build && npm test",
     "docs": "typedoc --out docs src/index.ts",
+    "lint": "biome ci src/*.ts",
+    "lint:fix": "biome check --fix src/*.ts",
+    "prepublishOnly": "npm run build",
     "test": "vitest run"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://codeberg.org/ironarachne/words.git"
+    "url": "git+https://github.com/ironarachne/words.git"
   },
   "keywords": [
-    "words"
+    "ironarachne",
+    "words",
+    "grammar",
+    "inflection",
+    "pluralize",
+    "text"
   ],
   "author": "Ben Overmyer <ben@overmyer.net> (https://benovermyer.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://codeberg.org/ironarachne/words/issues"
+    "url": "https://github.com/ironarachne/words/issues"
   },
-  "homepage": "https://words.ironarachne.com/docs",
+  "homepage": "https://ironarachne.github.io/words",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
     "typedoc": "^0.28.15",

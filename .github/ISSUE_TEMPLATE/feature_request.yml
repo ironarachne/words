@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest a new capability for the library.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to do that the library makes hard today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: What would the call look like?
+      render: typescript
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Constraints
+      options:
+        - label: This can be implemented without adding a runtime dependency.
+        - label: This applies to English, or is clearly scoped to a language the library already handles.
