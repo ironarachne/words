@@ -1,5 +1,10 @@
 /**
- * This function returns the correct article for a given word.
+ * Returns the correct article ("a" or "an") for a given word based on its
+ * first letter.
+ *
+ * Note: the choice is based on spelling, so it can be wrong for words whose
+ * pronunciation differs from their spelling (e.g. "a unicorn", "an MBA",
+ * "a one").
  *
  * @param {string} word - The word to get the article for.
  * @param {boolean} appendWord - Whether or not to append the word to the article.
@@ -7,11 +12,13 @@
  */
 export declare function article(word: string, appendWord?: boolean): string;
 /**
- * This function returns the pronoun for a given gender and word case.
+ * Returns the pronoun for a given gender and word case.
+ * Unknown genders default to singular they. Unknown word cases throw.
  *
- * @param {string} gender - The gender to get the pronoun for.
- * @param {string} wordCase - The word case to get the pronoun for.
+ * @param {string} gender - The gender ("female", "male", or any other value).
+ * @param {string} wordCase - One of "subjective", "possessive", or "objective".
  * @returns {string} The pronoun.
+ * @throws {Error} If wordCase is not one of the three supported values.
  */
 export declare function pronoun(gender: string, wordCase: string): string;
 /**

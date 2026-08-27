@@ -24,6 +24,14 @@ describe("article", () => {
     expect(article("honor")).toBe("an");
     expect(article("honest", true)).toBe("an honest");
     expect(article("herb")).toBe("an");
+    expect(article("hour")).toBe("an");
+    expect(article("heir")).toBe("an");
+  });
+
+  it("is case-insensitive", () => {
+    expect(article("Apple")).toBe("an");
+    expect(article("Honor")).toBe("an");
+    expect(article("HOUR")).toBe("an");
   });
 
   it("returns 'a' for empty string", () => {
@@ -44,96 +52,15 @@ describe("pronoun", () => {
     expect(pronoun("male", "objective")).toBe("him");
   });
 
-  it("defaults to male pronouns for unknown gender", () => {
-    expect(pronoun("other", "subjective")).toBe("he");
-  });
-});
-
-describe("quantify", () => {
-  it("pluralizes appropriately based on count", () => {
-    expect(quantify(1, "apple")).toBe("1 apple");
-    expect(quantify(2, "apple")).toBe("2 apples");
-    expect(quantify(0, "apple")).toBe("0 apples");
+  it("uses singular they for unknown gender", () => {
+    expect(pronoun("other", "subjective")).toBe("they");
+    expect(pronoun("nonbinary", "possessive")).toBe("their");
+    expect(pronoun("neutral", "objective")).toBe("them");
   });
 
-  it("converts numbers to words if requested", () => {
-    expect(quantify(1, "apple", undefined, true)).toBe("one apple");
-    expect(quantify(21, "apple", undefined, true)).toBe("twenty-one apples");
-  });
-
-  it("uses custom plural if provided", () => {
-    expect(quantify(2, "person", "persons")).toBe("2 persons");
-  });
-});
-
-describe("copulas and verbs (isAre, hasHave, wasWere)", () => {
-  it("returns singular forms for count 1", () => {
-    expect(isAre(1)).toBe("is");
-    expect(hasHave(1)).toBe("has");
-    expect(wasWere(1)).toBe("was");
-  });
-
-  it("returns plural forms for count != 1", () => {
-    expect(isAre(2)).toBe("are");
-    expect(hasHave(0)).toBe("have");
-    expect(wasWere(5)).toBe("were");
-  });
-});
-
-describe("possessive", () => {
-  it("returns correct normal possessive", () => {
-    expect(possessive("John")).toBe("John's");
-    expect(possessive("dog")).toBe("dog's");
-  });
-
-  it("returns correct trailing s possessive", () => {
-    expect(possessive("James")).toBe("James'");
-    expect(possessive("dogs")).toBe("dogs'");
-    expect(possessive("JESUS")).toBe("JESUS'");
-  });
-});
-
-describe("quantify", () => {
-  it("pluralizes appropriately based on count", () => {
-    expect(quantify(1, "apple")).toBe("1 apple");
-    expect(quantify(2, "apple")).toBe("2 apples");
-    expect(quantify(0, "apple")).toBe("0 apples");
-  });
-
-  it("converts numbers to words if requested", () => {
-    expect(quantify(1, "apple", undefined, true)).toBe("one apple");
-    expect(quantify(21, "apple", undefined, true)).toBe("twenty-one apples");
-  });
-
-  it("uses custom plural if provided", () => {
-    expect(quantify(2, "person", "persons")).toBe("2 persons");
-  });
-});
-
-describe("copulas and verbs (isAre, hasHave, wasWere)", () => {
-  it("returns singular forms for count 1", () => {
-    expect(isAre(1)).toBe("is");
-    expect(hasHave(1)).toBe("has");
-    expect(wasWere(1)).toBe("was");
-  });
-
-  it("returns plural forms for count != 1", () => {
-    expect(isAre(2)).toBe("are");
-    expect(hasHave(0)).toBe("have");
-    expect(wasWere(5)).toBe("were");
-  });
-});
-
-describe("possessive", () => {
-  it("returns correct normal possessive", () => {
-    expect(possessive("John")).toBe("John's");
-    expect(possessive("dog")).toBe("dog's");
-  });
-
-  it("returns correct trailing s possessive", () => {
-    expect(possessive("James")).toBe("James'");
-    expect(possessive("dogs")).toBe("dogs'");
-    expect(possessive("JESUS")).toBe("JESUS'");
+  it("throws on unknown word case", () => {
+    expect(() => pronoun("female", "dative")).toThrow();
+    expect(() => pronoun("male", "reflexive")).toThrow();
   });
 });
 

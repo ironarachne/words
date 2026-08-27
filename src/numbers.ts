@@ -5,11 +5,12 @@
  * @returns {string} The ordinal suffix for the given number.
  */
 export function getOrdinal(number: number): string {
-  if (number > 3 && number < 21) {
+  const lastTwo = Math.abs(number) % 100;
+  if (lastTwo >= 11 && lastTwo <= 13) {
     return "th";
   }
 
-  const lastDigitOfNumber = number % 10;
+  const lastDigitOfNumber = Math.abs(number) % 10;
 
   switch (lastDigitOfNumber) {
     case 1:
@@ -28,10 +29,18 @@ export function getOrdinal(number: number): string {
  *
  * @param {number} num - The number to convert.
  * @returns {string} The roman numeral.
+ * @throws {TypeError} If num is not an integer.
+ * @throws {RangeError} If num is not positive.
  */
 export function romanize(num: number): string {
   if (Number.isNaN(num)) return Number.NaN.toString();
-  const digits = String(+num).split("");
+  if (!Number.isInteger(num)) {
+    throw new TypeError("romanize requires an integer");
+  }
+  if (num <= 0) {
+    throw new RangeError("romanize requires a positive integer");
+  }
+  const digits = String(num).split("");
   const key = [
     "",
     "C",
@@ -74,7 +83,7 @@ export function romanize(num: number): string {
       }
     }
   }
-  return Array(+digits.join("") + 1).join("M") + roman;
+  return "M".repeat(+digits.join("")) + roman;
 }
 
 const ONES = [
@@ -113,7 +122,14 @@ const TENS = [
   "eighty",
   "ninety",
 ];
-const SCALES = ["", "thousand", "million", "billion", "trillion"];
+const SCALES = [
+  "",
+  "thousand",
+  "million",
+  "billion",
+  "trillion",
+  "quadrillion",
+];
 
 /**
  * Converts a number up to 999 into its English word equivalent.
@@ -146,13 +162,15 @@ function convertHundreds(num: number): string {
 
 /**
  * This function converts an integer to its English word equivalent.
+ * Supports all safe integers (up to 9,007,199,254,740,991). Numbers beyond
+ * that range are returned as their string representation.
  *
  * @param {number} number - The number to convert to words.
  * @returns {string} The text equivalent of the number.
  */
 export function numberToWords(number: number): string {
   if (number === 0) return "zero";
-  if (!Number.isInteger(number)) return number.toString();
+  if (!Number.isSafeInteger(number)) return number.toString();
 
   let isNegative = false;
   if (number < 0) {
@@ -170,15 +188,26 @@ export function numberToWords(number: number): string {
       if (SCALES[scaleIndex]) {
         chunkText += ` ${SCALES[scaleIndex]}`;
       }
-      parts.unshift(chunkText);
+      parts.push(chunkText);
     }
     number = Math.floor(number / 1000);
     scaleIndex++;
   }
 
+  parts.reverse();
   const result = parts.join(" ");
   return isNegative ? `negative ${result}` : result;
 }
+
+const ORDINALS: Record<string, string> = {
+  one: "first",
+  two: "second",
+  three: "third",
+  five: "fifth",
+  eight: "eighth",
+  nine: "ninth",
+  twelve: "twelfth",
+};
 
 /**
  * This function converts an integer to its ordinal word equivalent (e.g. 1 -> "first").
@@ -192,21 +221,11 @@ export function ordinalWord(number: number): string {
 
   const words = numberToWords(number);
 
-  const ordinals: Record<string, string> = {
-    one: "first",
-    two: "second",
-    three: "third",
-    five: "fifth",
-    eight: "eighth",
-    nine: "ninth",
-    twelve: "twelfth",
-  };
-
   const tokens = words.split(/([-\s])/);
   const lastWord = tokens[tokens.length - 1];
 
-  if (ordinals[lastWord]) {
-    tokens[tokens.length - 1] = ordinals[lastWord];
+  if (ORDINALS[lastWord]) {
+    tokens[tokens.length - 1] = ORDINALS[lastWord];
   } else if (lastWord.endsWith("y")) {
     tokens[tokens.length - 1] = `${lastWord.slice(0, -1)}ieth`;
   } else {

@@ -10,10 +10,14 @@ export declare function getOrdinal(number: number): string;
  *
  * @param {number} num - The number to convert.
  * @returns {string} The roman numeral.
+ * @throws {TypeError} If num is not an integer.
+ * @throws {RangeError} If num is not positive.
  */
 export declare function romanize(num: number): string;
 /**
  * This function converts an integer to its English word equivalent.
+ * Supports all safe integers (up to 9,007,199,254,740,991). Numbers beyond
+ * that range are returned as their string representation.
  *
  * @param {number} number - The number to convert to words.
  * @returns {string} The text equivalent of the number.

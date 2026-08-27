@@ -1,5 +1,6 @@
 /**
  * This function capitalizes the first letter of a word.
+ * Handles multi-byte code points (e.g. emoji) correctly.
  *
  * @param {string} word - The word to capitalize.
  * @returns {string} The capitalized word.
@@ -13,10 +14,12 @@ export declare function capitalize(word: string): string;
  */
 export declare function uncapitalize(word: string): string;
 /**
- * This function capitalizes the first letter of each word in a phrase.
+ * This function capitalizes the first letter of each word in a phrase,
+ * lowercasing small words (articles, conjunctions, short prepositions)
+ * when they are not the first word.
  *
- * @param {string} phrase - The phrase to capitalize.
- * @returns {string} The capitalized phrase.
+ * @param {string} phrase - The phrase to title-case.
+ * @returns {string} The title-cased phrase.
  */
 export declare function title(phrase: string): string;
 /**
@@ -42,6 +45,7 @@ export declare function snakeCase(phrase: string): string;
 export declare function kebabCase(phrase: string): string;
 /**
  * This function swaps the casing of each letter in a word.
+ * Iterates by code point so multi-byte characters (e.g. emoji) are preserved.
  *
  * @param {string} word - The word to convert.
  * @returns {string} The converted word.

@@ -31,6 +31,11 @@ describe("arrayToPhrase", () => {
     expect(arrayToPhrase(["apple", "banana"], "or")).toBe("apple or banana");
     expect(arrayToPhrase(["x", "y", "z"], "nor")).toBe("x, y, nor z");
   });
+
+  it("filters out empty strings", () => {
+    expect(arrayToPhrase(["a", "", "c"])).toBe("a and c");
+    expect(arrayToPhrase(["", ""])).toBe("");
+  });
 });
 
 describe("slugify", () => {
@@ -51,6 +56,10 @@ describe("truncateWords", () => {
     expect(truncateWords("Short", 5)).toBe("Short");
     expect(truncateWords("1 2 3", 3, "")).toBe("1 2 3");
   });
+
+  it("throws on negative maxWords", () => {
+    expect(() => truncateWords("one two", -1)).toThrow(RangeError);
+  });
 });
 
 describe("stripPunctuation", () => {
@@ -58,11 +67,15 @@ describe("stripPunctuation", () => {
     expect(stripPunctuation("Hello, World!")).toBe("Hello World");
     expect(stripPunctuation("wait... what?")).toBe("wait what");
   });
+
+  it("removes quotes and brackets", () => {
+    expect(stripPunctuation('He said "hi"')).toBe("He said hi");
+    expect(stripPunctuation("[x]")).toBe("x");
+  });
 });
 
 describe("squish", () => {
   it("collapses whitespace", () => {
-    // use basic space since the function replaces all whitespace with single space
     expect(squish("  too   many     spaces  ")).toBe("too many spaces");
     expect(squish("\n\nNewlines\t\tand\ttabs\n")).toBe("Newlines and tabs");
   });
@@ -80,8 +93,13 @@ describe("wordCount", () => {
 describe("readingTime", () => {
   it("estimates based on word count", () => {
     expect(readingTime("Word ".repeat(200))).toBe(1);
-    expect(readingTime("Word ".repeat(450))).toBe(3); // 450/200 = 2.25 ceil -> 3
+    expect(readingTime("Word ".repeat(450))).toBe(3);
     expect(readingTime("Word ".repeat(50))).toBe(1);
+  });
+
+  it("throws on non-positive wordsPerMinute", () => {
+    expect(() => readingTime("hello", 0)).toThrow(RangeError);
+    expect(() => readingTime("hello", -1)).toThrow(RangeError);
   });
 });
 
@@ -98,6 +116,11 @@ describe("fixPunctuation", () => {
 
   it("collapses multiple spaces", () => {
     expect(fixPunctuation("hello     world")).toBe("hello world");
+  });
+
+  it("preserves ellipses", () => {
+    expect(fixPunctuation("Wait... what?!")).toBe("Wait... what?!");
+    expect(fixPunctuation("hmm....")).toBe("hmm...");
   });
 });
 
@@ -135,5 +158,10 @@ describe("buildSentence", () => {
     expect(buildSentence(["  start", " , middle  ", "end .  "])).toBe(
       "Start, middle end.",
     );
+  });
+
+  it("places terminal punctuation inside closing quotes", () => {
+    expect(buildSentence(['He said "hi"'])).toBe('He said "hi."');
+    expect(buildSentence(['He said "hi!"'])).toBe('He said "hi!"');
   });
 });

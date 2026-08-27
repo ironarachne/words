@@ -31,6 +31,8 @@ Robust rules and an expansive irregular dictionary (e.g., *radius/radii*, *goose
 *   `pluralize(word: string)`
 *   `singularize(word: string)`
 *   `detectPlural(word: string)`
+*   `comparative(word: string)` -> `"big"` becomes `"bigger"`, `"beautiful"` becomes `"more beautiful"`
+*   `superlative(word: string)` -> `"big"` becomes `"biggest"`, `"beautiful"` becomes `"most beautiful"`
 
 ### 🔢 Numbers
 Format numbers as text or traditional numeric formats.

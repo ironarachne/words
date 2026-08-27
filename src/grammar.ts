@@ -1,67 +1,55 @@
 import { pluralize } from "./inflection.js";
 import { numberToWords } from "./numbers.js";
 
+const ARTICLE_EXCEPTIONS = ["honor", "honest", "herb", "hour", "heir"];
+const VOWEL_LETTERS = ["a", "e", "i", "o", "u"];
+
 /**
- * This function returns the correct article for a given word.
+ * Returns the correct article ("a" or "an") for a given word based on its
+ * first letter.
+ *
+ * Note: the choice is based on spelling, so it can be wrong for words whose
+ * pronunciation differs from their spelling (e.g. "a unicorn", "an MBA",
+ * "a one").
  *
  * @param {string} word - The word to get the article for.
  * @param {boolean} appendWord - Whether or not to append the word to the article.
  * @returns {string} The article for the given word.
  */
 export function article(word: string, appendWord = false): string {
-  const exceptions = ["honor", "honest", "herb"];
-
-  if (exceptions.includes(word)) {
-    if (appendWord) {
-      return `an ${word}`;
-    }
-    return "an";
-  }
-
-  const vowels = ["a", "e", "i", "o", "u"];
-
-  if (vowels.includes(word.substring(0, 1))) {
-    if (appendWord) {
-      return `an ${word}`;
-    }
-    return "an";
-  }
-
-  if (appendWord) {
-    return `a ${word}`;
-  }
-  return "a";
+  const lower = word.toLowerCase();
+  const articleWord =
+    ARTICLE_EXCEPTIONS.includes(lower) ||
+    VOWEL_LETTERS.includes(lower.substring(0, 1))
+      ? "an"
+      : "a";
+  return appendWord ? `${articleWord} ${word}` : articleWord;
 }
 
+const PRONOUNS: Record<string, Record<string, string>> = {
+  female: { subjective: "she", possessive: "her", objective: "her" },
+  male: { subjective: "he", possessive: "his", objective: "him" },
+  neutral: { subjective: "they", possessive: "their", objective: "them" },
+};
+
 /**
- * This function returns the pronoun for a given gender and word case.
+ * Returns the pronoun for a given gender and word case.
+ * Unknown genders default to singular they. Unknown word cases throw.
  *
- * @param {string} gender - The gender to get the pronoun for.
- * @param {string} wordCase - The word case to get the pronoun for.
+ * @param {string} gender - The gender ("female", "male", or any other value).
+ * @param {string} wordCase - One of "subjective", "possessive", or "objective".
  * @returns {string} The pronoun.
+ * @throws {Error} If wordCase is not one of the three supported values.
  */
 export function pronoun(gender: string, wordCase: string): string {
-  let pronoun = "";
-
-  if (gender === "female") {
-    if (wordCase === "subjective") {
-      pronoun = "she";
-    } else if (wordCase === "possessive") {
-      pronoun = "her";
-    } else if (wordCase === "objective") {
-      pronoun = "her";
-    }
-  } else {
-    if (wordCase === "subjective") {
-      pronoun = "he";
-    } else if (wordCase === "possessive") {
-      pronoun = "his";
-    } else if (wordCase === "objective") {
-      pronoun = "him";
-    }
+  const set = PRONOUNS[gender.toLowerCase()] ?? PRONOUNS.neutral;
+  const result = set[wordCase];
+  if (!result) {
+    throw new Error(
+      `Unknown word case: "${wordCase}". Expected "subjective", "possessive", or "objective".`,
+    );
   }
-
-  return pronoun;
+  return result;
 }
 
 /**
